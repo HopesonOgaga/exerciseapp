@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #D46D25;   /* Terracotta / Primary Orange */
+  --color-brand-secondary: #A4B885; /* Sage Green */
+  --color-brand-accent: #FDC086;    /* Soft Peach */
+  --color-brand-surface: #FFF6A1;   /* Pale Yellow */
+}
