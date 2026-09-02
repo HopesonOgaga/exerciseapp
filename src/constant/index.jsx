@@ -18,17 +18,26 @@ function Nav() {
         <nav className="hidden md:block">
           <ul className="flex items-center gap-8 capitalize tracking-wide text-sm font-medium text-white/90">
             <li>
-              <a href="#" className="hover:text-brand-surface transition-colors">
+              <a
+                href="#"
+                className="hover:text-brand-surface transition-colors"
+              >
                 about us
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-brand-surface transition-colors">
+              <a
+                href="#"
+                className="hover:text-brand-surface transition-colors"
+              >
                 professional services
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-brand-surface transition-colors">
+              <a
+                href="#"
+                className="hover:text-brand-surface transition-colors"
+              >
                 resources
               </a>
             </li>
@@ -40,7 +49,7 @@ function Nav() {
           <button className="cursor-pointer capitalize tracking-wide text-sm font-semibold text-white hover:text-brand-surface transition-colors">
             login
           </button>
-          
+
           <button className="cursor-pointer bg-brand-primary hover:bg-brand-primary/90 text-white font-semibold text-sm px-5 py-2.5 rounded-lg shadow-sm transition-all transform hover:scale-[1.02] active:scale-[0.98]">
             get started
           </button>
