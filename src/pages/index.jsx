@@ -1,6 +1,7 @@
 import React from "react";
 import Nav from "../constant";
 import Footer from "../constant/footer";
+import { Link } from "react-router-dom";
 
 const info = [
   {
@@ -23,7 +24,8 @@ const info = [
   },
 ];
 
-const video_url = "https://res.cloudinary.com/dsiyqikl2/video/upload/v1787432084/ladyworkout_id1cvv.mp4"
+const video_url =
+  "https://res.cloudinary.com/dsiyqikl2/video/upload/v1787432084/ladyworkout_id1cvv.mp4";
 
 export default function Index() {
   return (
@@ -40,7 +42,7 @@ export default function Index() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
           >
-          <source src={video_url} type="video/mp4" />
+            <source src={video_url} type="video/mp4" />
           </video>
 
           {/* Light Dark Blur Overlay */}
@@ -51,11 +53,11 @@ export default function Index() {
             Every day, it gets a little easier. But you gotta do it every day,
             that's the hard part.
           </p>
-
-          <button className="w-44 h-12 shadow-md rounded-sm capitalize font-semibold cursor-pointer text-sm z-10 bg-brand-primary hover:bg-brand-primary/90 text-white transition-all">
-            get started
-          </button>
-
+          <Link to="/signup" className="w-full z-10 flex justify-center cursor-pointer">
+            <button className="w-44  h-12 shadow-md rounded-sm capitalize font-semibold cursor-pointer text-sm z-10 bg-brand-primary hover:bg-brand-primary/90 text-white transition-all">
+              get started
+            </button>
+          </Link>
           <p className="z-10 text-white/90 text-sm font-medium drop-shadow-sm">
             Start for free. No credit card required.
           </p>

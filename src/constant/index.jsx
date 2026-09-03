@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Nav() {
   return (
@@ -46,13 +47,17 @@ function Nav() {
 
         {/* Actions */}
         <div className="flex items-center gap-5">
-          <button className="cursor-pointer capitalize tracking-wide text-sm font-semibold text-white hover:text-brand-surface transition-colors">
-            login
-          </button>
+          <Link to="/login">
+            <button className="cursor-pointer capitalize tracking-wide text-sm font-semibold text-white hover:text-brand-surface transition-colors">
+              login
+            </button>
+          </Link>
 
-          <button className="cursor-pointer bg-brand-primary hover:bg-brand-primary/90 text-white font-semibold text-sm px-5 py-2.5 rounded-lg shadow-sm transition-all transform hover:scale-[1.02] active:scale-[0.98]">
-            get started
-          </button>
+          <Link to="/signup">
+            <button className="cursor-pointer capitalize tracking-wide text-sm font-semibold text-white hover:text-brand-surface transition-colors">
+              get started
+            </button>
+          </Link>
         </div>
       </div>
     </header>
