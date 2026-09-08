@@ -29,7 +29,7 @@ const legalLinks = [
   { name: "Trust Center", href: "#" },
 ];
 
-function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-brand-primary text-white w-full min-h-screen flex flex-col justify-between p-8 md:p-16">
       {/* Top Section: Brand & Navigation Grid */}
@@ -113,4 +113,3 @@ function Footer() {
   );
 }
 
-export default Footer;

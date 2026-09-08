@@ -27,13 +27,13 @@ export const DashboardNav = () => {
         </div>
         <div className="flex gap-4 items-center">
           <div>
-            <RefreshCw className="w-5 h-5" />
+            <RefreshCw className="w-5 h-5 cursor-pointer" />
           </div>
           <div>
-            <Bell className="w-5 h-5" />
+            <Bell className="w-5 h-5 cursor-pointer " />
           </div>
           <div>
-            <User className="w-5 h-5" />
+            <User className="w-5 h-5 cursor-pointer" />
           </div>
         </div>
       </section>
