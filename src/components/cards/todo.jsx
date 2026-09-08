@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 
-export const HabitCard = () => {
+export const TodoCard = () => {
   const [textHidden, setTextHidden] = useState(false);
   const [newHabit, setNewHabit] = useState("");
 
@@ -66,7 +66,7 @@ export const HabitCard = () => {
           {/* Header */}
           <div className="flex gap-4 items-center p-4">
             <p className="capitalize font-semibold text-lg">
-              habits
+              Todo's 
             </p>
 
             <p className="text-sm bg-brand-primary/80 w-8 h-8 text-center text-white font-semibold rounded-full flex items-center justify-center">
