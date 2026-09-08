@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Index from "./pages";
 import Signup from "./components/signup";
 import Login from "./components/login";
+import { Dashboard } from "./components/dashboard/dashboard";
 
 function ScrollToTopLayout() {
   const { pathname } = useLocation();
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login></Login>,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>,
       },
     ],
   },
