@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 export const HabitCard = () => {
@@ -32,10 +31,8 @@ export const HabitCard = () => {
   const completeHabit = (id) => {
     setHabits((currentHabits) =>
       currentHabits.map((habit) =>
-        habit.id === id
-          ? { ...habit, completed: true }
-          : habit
-      )
+        habit.id === id ? { ...habit, completed: true } : habit,
+      ),
     );
   };
 
@@ -43,31 +40,25 @@ export const HabitCard = () => {
   const uncompleteHabit = (id) => {
     setHabits((currentHabits) =>
       currentHabits.map((habit) =>
-        habit.id === id
-          ? { ...habit, completed: false }
-          : habit
-      )
+        habit.id === id ? { ...habit, completed: false } : habit,
+      ),
     );
   };
 
   // Remove habit
   const removeHabit = (id) => {
     setHabits((currentHabits) =>
-      currentHabits.filter((habit) => habit.id !== id)
+      currentHabits.filter((habit) => habit.id !== id),
     );
   };
 
   return (
     <section className="p-4">
-      <div className="bg-stone-100 w-[30vw] rounded-md min-h-[70vh] flex justify-center items-center">
-        
-        <div className="w-[25vw] shadow-md rounded-md h-[65vh] bg-white">
-
+      <div className="bg-stone-100 w-[30vw] rounded-md min-h-[70vh] flex justify-center items-start py-6">
+        <div className="w-[25vw] shadow-md rounded-md bg-white overflow-hidden">
           {/* Header */}
           <div className="flex gap-4 items-center p-4">
-            <p className="capitalize font-semibold text-lg">
-              habits
-            </p>
+            <p className="capitalize font-semibold text-lg">habits</p>
 
             <p className="text-sm bg-brand-primary/80 w-8 h-8 text-center text-white font-semibold rounded-full flex items-center justify-center">
               {habits.length}
@@ -82,7 +73,7 @@ export const HabitCard = () => {
               value={newHabit}
               onChange={(e) => setNewHabit(e.target.value)}
               onKeyDown={addHabit}
-              className="w-[90%] h-[5vh] rounded-sm border-2 border-brand-accent/80 p-2 m-4 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent"
+              className="placeholder:capitalize placeholder:text-sm w-[90%] h-[5vh] rounded-sm border-2 border-brand-accent/80 p-2 m-4 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent"
               onFocus={() => setTextHidden(true)}
               onBlur={() => setTextHidden(false)}
             />
@@ -96,13 +87,11 @@ export const HabitCard = () => {
 
           {/* Habits */}
           <section className="p-4 space-y-3">
-
             {habits.map((habit) => (
               <div
                 key={habit.id}
                 className="flex w-full h-[15vh] overflow-hidden rounded-md shadow-md"
               >
-
                 {/* Completed */}
                 <div className="flex items-center justify-center w-[3vw] shrink-0 bg-brand-primary/80 text-white rounded-l-md">
                   <button
@@ -121,9 +110,7 @@ export const HabitCard = () => {
                 >
                   <p
                     className={`text-sm capitalize ${
-                      habit.completed
-                        ? "line-through text-stone-400"
-                        : ""
+                      habit.completed ? "line-through text-stone-400" : ""
                     }`}
                   >
                     {habit.name}
@@ -139,14 +126,12 @@ export const HabitCard = () => {
                     -
                   </button>
                 </div>
-
               </div>
             ))}
-
           </section>
         </div>
+       
       </div>
     </section>
   );
 };
-
