@@ -7,41 +7,29 @@ function Nav() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand Logo */}
         <div>
-          <a
-            href="#"
-            className="capitalize font-extrabold tracking-wider text-2xl text-white hover:text-brand-surface transition-colors"
-          >
-            praisefit
-          </a>
+          <Link to={"/"}>
+            <p className="capitalize font-extrabold tracking-wider text-2xl text-white hover:text-brand-surface transition-colors">
+              {" "}
+              praisefit
+            </p>
+          </Link>
         </div>
 
         {/* Navigation Links */}
         <nav className="hidden md:block">
           <ul className="flex items-center gap-8 capitalize tracking-wide text-sm font-medium text-white/90">
-            <li>
-              <a
-                href="#"
-                className="hover:text-brand-surface transition-colors"
-              >
+            <Link to={"/about"}>
+              <li className="hover:text-brand-surface transition-colors">
                 about us
-              </a>
-            </li>
-            {/* <li>
-              <a
-                href="#"
-                className="hover:text-brand-surface transition-colors"
-              >
-                learn more 
-              </a>
-            </li> */}
-            <li>
-              <a
-                href="#"
-                className="hover:text-brand-surface transition-colors"
-              >
-                contact us 
-              </a>
-            </li>
+              </li>
+            </Link>
+
+            <Link to={"/"}>
+              {" "}
+              <li className="hover:text-brand-surface transition-colors">
+                contact us
+              </li>
+            </Link>
           </ul>
         </nav>
 
