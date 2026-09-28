@@ -9,7 +9,7 @@ export const DashboardNav = () => {
         <div className="flex gap-6 items-center ">
           <div>
             <Link to="/">
-              {" "}
+              
               <a
                 href="#"
                 className="capitalize font-extrabold tracking-wider text-2xl  hover:text-brand-surface transition-colors"
@@ -17,7 +17,7 @@ export const DashboardNav = () => {
                 praisefit
               </a>
             </Link>
-          </div>{" "}
+          </div>
           <p className="hover:text-brand-surface transition-colors cursor-pointer capitalize ">
             task
           </p>
