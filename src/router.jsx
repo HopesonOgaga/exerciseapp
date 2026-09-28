@@ -6,6 +6,7 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 import { Dashboard } from "./components/dashboard/dashboard";
 import { HabitCard } from "./components/cards/habitcard";
+import { About } from "./pages/about";
 
 function ScrollToTopLayout() {
   const { pathname } = useLocation();
@@ -40,10 +41,15 @@ export const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard></Dashboard>,
-      },{
-        path:"habitcard",
-        element:<HabitCard></HabitCard>
-      }
+      },
+      {
+        path: "habitcard",
+        element: <HabitCard></HabitCard>,
+      },
+      {
+        path: "/about",
+        element: <About></About>,
+      },
     ],
   },
 ]);

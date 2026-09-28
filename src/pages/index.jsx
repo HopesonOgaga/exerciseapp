@@ -2,28 +2,29 @@ import React from "react";
 import Nav from "../constant/nav";
 import Footer from "../constant/footer";
 import { Link } from "react-router-dom";
-
 const info = [
   {
-    title: " Create the perfect time",
-    description: "The routine should fit your lifestyle.",
-    image: "/images/ladyexercise.jpg",
-    button: "start your rountine",
+    title: "Plan your day",
+    description:
+      "Keep your tasks organized and know exactly what needs to get done.",
+    image: "/images/routine.jpg",
+    button: "Plan your day",
   },
   {
-    title: " Create the perfect time",
-    description: "The routine should fit your lifestyle.",
-    image: "/images/ladyexercise.jpg",
-    button: "start your rountine",
+    title: "Stay on track",
+    description:
+      "Track your daily tasks, build consistency, and keep making progress.",
+    image: "/images/besmart.jpg",
+    button: "Track your tasks",
   },
   {
-    title: " Create the perfect time",
-    description: "The routine should fit your lifestyle.",
-    image: "/images/ladyexercise.jpg",
-    button: "start your rountine",
+    title: "Get things done",
+    description:
+      "Turn your daily goals into simple tasks and check them off as you go.",
+    image: "/images/timer.jpg",
+    button: "Get started",
   },
 ];
-
 const video_url =
   "https://res.cloudinary.com/dsiyqikl2/video/upload/v1787432084/ladyworkout_id1cvv.mp4";
 
@@ -53,14 +54,14 @@ export default function Index() {
             Every day, it gets a little easier. But you gotta do it every day,
             that's the hard part.
           </p>
-          <Link to="/signup" className="w-full z-10 flex justify-center cursor-pointer">
+          <Link
+            to="/signup"
+            className="w-full z-10 flex justify-center cursor-pointer"
+          >
             <button className="w-44  h-12 shadow-md rounded-sm capitalize font-semibold cursor-pointer text-sm z-10 bg-brand-primary hover:bg-brand-primary/90 text-white transition-all">
               get started
             </button>
           </Link>
-          <p className="z-10 text-white/90 text-sm font-medium drop-shadow-sm">
-            Start for free. No credit card required.
-          </p>
         </div>
 
         {/* card section */}
@@ -72,7 +73,7 @@ export default function Index() {
                 <div className="bg-brand-secondary flex flex-col gap-5 w-full max-w-sm p-5 rounded-xl shadow-md border border-neutral-100 hover:shadow-lg transition-shadow duration-300">
                   <div className="w-full rounded-lg bg-brand-surface/30">
                     <img
-                      className="w-full object-cover hover:scale-105 transition-transform duration-500 ease-out rounded-md "
+                      className="w-full h-full lg:h-[60vh] hover:scale-105 transition-transform duration-500 ease-out rounded-md "
                       src={info.image}
                       alt="Woman doing workout exercise routine"
                     />

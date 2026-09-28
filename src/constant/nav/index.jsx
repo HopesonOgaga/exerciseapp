@@ -26,20 +26,20 @@ function Nav() {
                 about us
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="hover:text-brand-surface transition-colors"
               >
-                professional services
+                learn more 
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"
                 className="hover:text-brand-surface transition-colors"
               >
-                resources
+                contact us 
               </a>
             </li>
           </ul>
