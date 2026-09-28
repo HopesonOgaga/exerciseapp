@@ -24,7 +24,7 @@ function Nav() {
               </li>
             </Link>
 
-            <Link to={"/"}>
+            <Link to={"/contactus"}>
               {" "}
               <li className="hover:text-brand-surface transition-colors">
                 contact us
