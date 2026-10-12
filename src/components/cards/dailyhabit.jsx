@@ -1,364 +1,195 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  AddInput,
+  CardShell,
+  EmptyState,
+  ProgressBar,
+  TaskModal,
+  TaskRow,
+  dateOf,
+  dayKey,
+  emptyTimer,
+  pauseTimer,
+  streakOf,
+  usePersistentState,
+  useTaskList,
+  useToday,
+} from "./shared";
 
-export const DailyHabitCard = () => {
-  const [textHidden, setTextHidden] = useState(false);
-  const [newHabit, setNewHabit] = useState("");
-  const [habits, setHabits] = useState([]);
+const greeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+};
 
-  // Modal / Form States
-  const [activeTask, setActiveTask] = useState(null);
-  const [editTitle, setEditTitle] = useState("");
-  const [editNote, setEditNote] = useState("");
-  const [editDifficulty, setEditDifficulty] = useState("medium");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [date, setDate] = useState("");
+/** Daily check-in: one tap per day, with a 7-day strip and a streak. */
+function CheckIn({ checkIns, today, done, total, onCheckIn }) {
+  const checkedIn = checkIns.includes(today);
+  const streak = streakOf(checkIns);
 
-  const tags = ["work", "exercise", "school", "chores", "creativity"];
-
-  // Add new habit
-  const addHabit = (e) => {
-    if (e.key === "Enter") {
-      const habitName = newHabit.trim();
-
-      if (!habitName) return;
-
-      const habit = {
-        id: Date.now(),
-        name: habitName,
-        completed: false,
-        note: "",
-        difficulty: "medium",
-        tags: [],
-        date: "",
-      };
-
-      setHabits((currentHabits) => [...currentHabits, habit]);
-      setNewHabit("");
-    }
-  };
-
-  const toggleTag = (tag) => {
-    setSelectedTags((currentTags) =>
-      currentTags.includes(tag)
-        ? currentTags.filter((item) => item !== tag)
-        : [...currentTags, tag]
-    );
-  };
-
-  // Toggle completed
-  const toggleHabit = (id) => {
-    setHabits((currentHabits) =>
-      currentHabits.map((habit) =>
-        habit.id === id
-          ? { ...habit, completed: !habit.completed }
-          : habit
-      )
-    );
-  };
-
-  // Remove habit
-  const removeHabit = (id) => {
-    setHabits((currentHabits) =>
-      currentHabits.filter((habit) => habit.id !== id)
-    );
-  };
-
-  // Open modal & populate existing task data
-  const handleTaskClick = (habit) => {
-    if (habit.completed) return; // Ignore completed habits
-    setActiveTask(habit);
-    setEditTitle(habit.name || "");
-    setEditNote(habit.note || "");
-    setEditDifficulty(habit.difficulty || "medium");
-    setDate(habit.date || "");
-    setSelectedTags(habit.tags || []);
-  };
-
-  // Close modal
-  const closeModal = () => {
-    setActiveTask(null);
-  };
-
-  // Save modal edits to habit state
-  const saveTask = () => {
-    if (!activeTask) return;
-
-    setHabits((currentHabits) =>
-      currentHabits.map((habit) =>
-        habit.id === activeTask.id
-          ? {
-              ...habit,
-              name: editTitle,
-              note: editNote,
-              difficulty: editDifficulty,
-              date: date,
-              tags: selectedTags,
-            }
-          : habit
-      )
-    );
-
-    closeModal();
-  };
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const offset = i - 6;
+    return {
+      key: dayKey(offset),
+      label: dateOf(offset).toLocaleDateString(undefined, { weekday: "narrow" }),
+      isToday: offset === 0,
+    };
+  });
 
   return (
-    <section className="p-4">
-      <div className="bg-stone-100 w-[30vw] rounded-md min-h-[70vh] flex justify-center items-start py-6">
-        <div className="w-[25vw] shadow-md rounded-md bg-white overflow-hidden">
-          {/* Header */}
-          <div className="flex gap-4 items-center p-4">
-            <p className="capitalize font-semibold text-lg">Dailies</p>
+    <div className="mx-5 mt-4 overflow-hidden rounded-xl bg-brand-primary p-4 text-white shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-semibold text-brand-accent">
+            {checkedIn ? "You're checked in" : `${greeting()}`}
+          </p>
+          <p className="mt-0.5 text-xs text-white/70">
+            {total === 0
+              ? "Add a daily to get started"
+              : `${done} of ${total} dailies done today`}
+          </p>
+        </div>
 
-            <p className="text-sm bg-brand-primary/80 w-8 h-8 text-center text-white font-semibold rounded-full flex items-center justify-center">
-              {habits.length}
-            </p>
-          </div>
-
-          {/* Add habit input */}
-          <div>
-            <input
-              type="text"
-              placeholder="add new daily habit"
-              value={newHabit}
-              onChange={(e) => setNewHabit(e.target.value)}
-              onKeyDown={addHabit}
-              className="placeholder:capitalize placeholder:text-sm w-[90%] h-[5vh] rounded-sm border-2 border-brand-accent/80 p-2 m-4 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent"
-              onFocus={() => setTextHidden(true)}
-              onBlur={() => setTextHidden(false)}
-            />
-
-            {!textHidden && (
-              <p className="text-center text-stone-400 text-sm capitalize">
-                tip to add multiple habits
-              </p>
-            )}
-          </div>
-
-          {/* Habits */}
-          <section className="p-4 space-y-3">
-            {habits.map((habit) => (
-              <div
-                key={habit.id}
-                className="flex w-full min-h-[15vh] overflow-hidden rounded-md shadow-md"
-              >
-                {/* Completed Checkbox */}
-                <div
-                  className={`flex items-center justify-center w-[3vw] shrink-0 text-white rounded-l-md transition-colors duration-200 ${
-                    habit.completed
-                      ? "bg-stone-400"
-                      : "bg-brand-primary/80"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={habit.completed}
-                    onChange={() => toggleHabit(habit.id)}
-                    className="w-6 h-6 m-1.5 p-0 shadow-md appearance-none bg-brand-accent/70 rounded-sm outline-none transition-all duration-200 checked:bg-stone-500"
-                  />
-                </div>
-
-                {/* Habit name & Info */}
-                <div
-                  className="flex flex-col justify-center p-2 flex-1 px-4 min-w-0 cursor-pointer"
-                  onClick={() => handleTaskClick(habit)}
-                  onDoubleClick={(e) => {
-                    e.stopPropagation();
-                    removeHabit(habit.id);
-                  }}
-                  title="Click to edit daily habit | Double click to remove"
-                >
-                  <p
-                    className={`text-sm capitalize break-words ${
-                      habit.completed
-                        ? "line-through text-stone-400"
-                        : ""
-                    }`}
-                  >
-                    {habit.name}
-                  </p>
-
-                  {/* Display updated parameters on habit card */}
-                  {!habit.completed && (
-                    <div className="flex flex-wrap items-center gap-2 mt-1">
-                      {habit.date && (
-                        <span className="text-[10px] text-stone-400">
-                          📅 {habit.date}
-                        </span>
-                      )}
-                      {habit.difficulty && (
-                        <span className="text-[10px] capitalize bg-stone-200 px-1.5 py-0.5 rounded text-stone-600">
-                          {habit.difficulty}
-                        </span>
-                      )}
-                      {habit.tags?.length > 0 && (
-                        <div className="flex gap-1 flex-wrap">
-                          {habit.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[10px] bg-brand-accent/30 text-stone-600 px-1.5 py-0.5 rounded-full capitalize"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </section>
+        <div className="text-right">
+          <p
+            key={streak}
+            className="animate-bump text-2xl font-semibold leading-none tabular-nums"
+          >
+            🔥 {streak}
+          </p>
+          <p className="mt-1 text-xs text-white/70">
+            day{streak === 1 ? "" : "s"} in a row
+          </p>
         </div>
       </div>
 
-      {/* Modal Popup Overlay */}
-      {activeTask && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <section className="w-full max-w-lg bg-white rounded-md shadow-xl overflow-hidden">
-            {/* Header + title/note */}
-            <div className="bg-brand-primary w-full p-5 rounded-t-sm flex flex-col gap-6">
-              {/* Header top */}
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-brand-accent font-semibold capitalize text-lg">
-                    edit daily habit
-                  </p>
-                </div>
-                <div className="gap-3 flex items-center">
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className="text-brand-accent capitalize hover:underline cursor-pointer"
-                  >
-                    cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={saveTask}
-                    className="w-20 h-10 rounded-md bg-white text-black capitalize cursor-pointer hover:bg-stone-100 transition font-medium"
-                  >
-                    save
-                  </button>
-                </div>
-              </div>
-
-              {/* Title + Note */}
-              <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
-                {/* Title */}
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="title"
-                    className="text-brand-accent font-semibold capitalize text-sm"
-                  >
-                    title
-                  </label>
-                  <input
-                    type="text"
-                    id="title"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    placeholder="Enter habit title"
-                    className="w-full h-10 border-none outline-none bg-brand-accent/75 rounded-sm shadow px-3 text-black placeholder:text-stone-500 focus:ring-2 focus:ring-white/40"
-                  />
-                </div>
-
-                {/* Note */}
-                <div className="flex flex-col gap-2">
-                  <label
-                    htmlFor="note"
-                    className="text-brand-accent font-semibold capitalize text-sm"
-                  >
-                    note
-                  </label>
-                  <textarea
-                    id="note"
-                    value={editNote}
-                    onChange={(e) => setEditNote(e.target.value)}
-                    placeholder="Add a note..."
-                    className="w-full min-h-20 resize-none border-none outline-none bg-brand-accent/75 rounded-sm shadow p-3 text-black placeholder:text-stone-500 focus:ring-2 focus:ring-white/40"
-                  />
-                </div>
-              </form>
+      {/* Last 7 days */}
+      <div className="mt-4 flex justify-between" aria-label="Check-ins this week">
+        {week.map(({ key, label, isToday }) => {
+          const checked = checkIns.includes(key);
+          return (
+            <div key={key} className="flex flex-col items-center gap-1">
+              <span className="text-[10px] text-white/60">{label}</span>
+              <span
+                className={`grid h-7 w-7 place-items-center rounded-full text-xs transition-all duration-300 ${
+                  checked
+                    ? "scale-100 bg-white text-brand-primary"
+                    : isToday
+                      ? "bg-white/10 ring-2 ring-white/60"
+                      : "bg-white/10"
+                }`}
+              >
+                {checked ? "✓" : ""}
+              </span>
             </div>
+          );
+        })}
+      </div>
 
-            {/* Difficulty */}
-            <div className="p-5 border-b border-stone-100">
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="difficulty"
-                  className="text-lg capitalize font-medium"
-                >
-                  difficulty
-                </label>
-                <select
-                  id="difficulty"
-                  value={editDifficulty}
-                  onChange={(e) => setEditDifficulty(e.target.value)}
-                  className="capitalize text-stone-500 border-none outline-none h-10 w-full shadow-sm rounded-sm px-3 bg-white focus:ring-2 focus:ring-brand-primary/30"
-                >
-                  <option value="easy">easy</option>
-                  <option value="trivia">trivia</option>
-                  <option value="medium">medium</option>
-                  <option value="hard">hard</option>
-                </select>
-              </div>
-            </div>
+      <button
+        type="button"
+        onClick={onCheckIn}
+        disabled={checkedIn}
+        className={`mt-4 h-10 w-full rounded-lg text-sm font-medium transition-all duration-200 ${
+          checkedIn
+            ? "cursor-default bg-white/15 text-white/80"
+            : "bg-white text-brand-primary hover:scale-[1.01] active:scale-95"
+        }`}
+      >
+        {checkedIn ? "Checked in for today" : "Check in for today"}
+      </button>
+    </div>
+  );
+}
 
-            {/* Date */}
-            <div className="p-5 border-b border-stone-100">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="date" className="text-lg capitalize font-medium">
-                  date
-                </label>
-                <input
-                  type="date"
-                  id="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full h-10 border-none outline-none shadow-sm rounded-sm px-3 text-stone-500 bg-white focus:ring-2 focus:ring-brand-primary/30 cursor-pointer"
-                />
-              </div>
-            </div>
+export const DailyHabitCard = () => {
+  const today = useToday();
+  const { tasks, setTasks, patch, add, remove } = useTaskList("dailies", () => ({
+    history: [], // list of day keys this daily was completed
+  }));
+  const [checkIns, setCheckIns] = usePersistentState("dailies-checkins", []);
+  const [timerDay, setTimerDay] = usePersistentState("dailies-timer-day", today);
+  const [editingId, setEditingId] = useState(null);
 
-            {/* Tags */}
-            <div className="p-5">
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-between items-center">
-                  <label className="text-lg capitalize font-medium">
-                    tags
-                  </label>
-                  {selectedTags.length > 0 && (
-                    <p className="text-xs text-stone-400">
-                      {selectedTags.length} selected
-                    </p>
-                  )}
-                </div>
+  // Timers on dailies measure "time today": reset them when the day changes
+  useEffect(() => {
+    if (timerDay !== today) {
+      setTimerDay(today);
+      setTasks((current) =>
+        current.map((task) => ({ ...task, timer: emptyTimer })),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [today]);
 
-                {/* Tag options */}
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => {
-                    const selected = selectedTags.includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() => toggleTag(tag)}
-                        className={`px-4 py-2 rounded-md capitalize text-sm cursor-pointer transition ${
-                          selected
-                            ? "bg-brand-primary text-brand-accent shadow-sm"
-                            : "bg-stone-100 text-stone-500 hover:bg-stone-200"
-                        }`}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
+  const isDone = (task) => task.history.includes(today);
+  const editing = tasks.find((task) => task.id === editingId);
+  const done = tasks.filter(isDone).length;
+
+  // A daily is "done" if today's date is in its history, so it
+  // un-checks itself automatically the next day.
+  const toggle = (id) =>
+    patch(id, (task) =>
+      task.history.includes(today)
+        ? { history: task.history.filter((day) => day !== today) }
+        : {
+            history: [...task.history, today],
+            timer: pauseTimer(task.timer),
+          },
+    );
+
+  const checkIn = () =>
+    setCheckIns((current) =>
+      current.includes(today) ? current : [...current, today],
+    );
+
+  return (
+    <CardShell title="Dailies" count={tasks.length}>
+      <CheckIn
+        checkIns={checkIns}
+        today={today}
+        done={done}
+        total={tasks.length}
+        onCheckIn={checkIn}
+      />
+
+      <AddInput placeholder="Add a daily habit" onAdd={add} />
+
+      {tasks.length > 0 && <ProgressBar done={done} total={tasks.length} />}
+
+      <ul className="space-y-3 p-5">
+        {tasks.length === 0 && (
+          <EmptyState>
+            No dailies yet. Add one you want to repeat every day.
+          </EmptyState>
+        )}
+
+        {tasks.map((task) => (
+          <TaskRow
+            key={task.id}
+            task={task}
+            today={today}
+            completed={isDone(task)}
+            streak={streakOf(task.history)}
+            onToggle={() => toggle(task.id)}
+            onOpen={() => setEditingId(task.id)}
+            onRemove={() => remove(task.id)}
+            onTimer={(timer) => patch(task.id, { timer })}
+          />
+        ))}
+      </ul>
+
+      {editing && (
+        <TaskModal
+          key={editing.id}
+          task={editing}
+          label="Edit daily habit"
+          onSave={(changes) => patch(editing.id, changes)}
+          onDelete={() => remove(editing.id)}
+          onClose={() => setEditingId(null)}
+        />
       )}
-    </section>
+    </CardShell>
   );
 };

@@ -5,10 +5,10 @@ import { TodoCard } from "./todo";
 
 export const Card = () => {
   return (
-    <section className="flex gap-4 justify-around p-4">
-      <HabitCard></HabitCard>
-      <DailyHabitCard></DailyHabitCard>
-      <TodoCard></TodoCard>
+    <section className="mx-auto grid max-w-7xl items-start gap-4 p-4 md:grid-cols-2 xl:grid-cols-3">
+      <HabitCard />
+      <DailyHabitCard />
+      <TodoCard />
     </section>
   );
 };
