@@ -11,6 +11,17 @@ function Login() {
         <div className="flex-1 flex items-center justify-center p-8 sm:p-12">
           <div className="flex flex-col gap-8 w-full max-w-sm">
             <div className="flex flex-col gap-2">
+              <a
+                href="/"
+                className="text-orange-400 hover:text-orange-500 hover:underline font-thin transition-colors capitalize text-sm"
+              >
+                head back to homepage
+              </a>
+             
+
+              <p className=""></p>
+            </div>
+            <div className="flex flex-col gap-2">
               <h1 className="font-bold text-3xl capitalize text-gray-900 tracking-tight">
                 welcome back, olivia
               </h1>

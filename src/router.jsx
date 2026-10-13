@@ -40,10 +40,6 @@ export const router = createBrowserRouter([
         element: <Login></Login>,
       },
       {
-        path: "dashboard",
-        element: <Dashboard></Dashboard>,
-      },
-      {
         path: "habitcard",
         element: <HabitCard></HabitCard>,
       },
@@ -52,9 +48,14 @@ export const router = createBrowserRouter([
         element: <About></About>,
       },
       {
-        path:"/contactus",
-        element:<Contactus></Contactus>
-      }
+        path: "/contactus",
+        element: <Contactus></Contactus>,
+      },
+
+      {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>,
+      },
     ],
   },
 ]);
