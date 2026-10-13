@@ -1,5 +1,6 @@
 import react from "react";
 import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import { useEffect } from "react";
 import Index from "./pages";
 import Signup from "./components/signup";
@@ -54,7 +55,11 @@ export const router = createBrowserRouter([
 
       {
         path: "dashboard",
-        element: <Dashboard></Dashboard>,
+        element: (
+          <ProtectedRoute>
+            <Dashboard></Dashboard>
+          </ProtectedRoute>
+        ),
       },
     ],
   },
